@@ -1,31 +1,57 @@
-import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppComponent } from './app.component';
+import { ENTITIES_INITIAL_STATE } from './store/entities.reducer';
+import * as EntitiesSelectors from "./store/entities.selectors";
+import * as EntitiesActions from "./store/entities.actions";
+import EntitiesMock from "./test/entities-mock";
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
+  let store: MockStore<ENTITIES_INITIAL_STATE>;
+  let component: AppComponent;
+
+  let fixture: ComponentFixture<AppComponent>;
+
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
+      imports: [
+        HttpClientTestingModule
+      ],
+      providers: [
+        provideMockStore({
+          selectors: [{
+            selector: EntitiesSelectors.selectEntities,
+            value: EntitiesMock.entities
+          }]
+        })
+      ]
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    store = TestBed.inject(MockStore);
+    fixture.detectChanges();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'ngrx-unit-test'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('ngrx-unit-test');
-  });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  it('should subscribe to entities', (done) => {
+    const mockEntities = EntitiesMock.entities;
+    store.overrideSelector(EntitiesSelectors.selectEntities, mockEntities);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('ngrx-unit-test app is running!');
-  });
+
+    component.entities$.subscribe((entities) => {
+      expect(entities).toEqual(mockEntities);
+      done();
+    })
+  })
+
 });

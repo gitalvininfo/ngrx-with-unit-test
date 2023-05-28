@@ -1,20 +1,26 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Climate</th>
-      <th scope="col">Diameter</th>
-      <th scope="col">Gravity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngIf="entities$ | async as entities">
-      <tr *ngFor="let entity of entities">
-        <th>{{entity.name}}</th>
-        <td>{{entity.climate}}</td>
-        <td>{{entity.diameter}}</td>
-        <td>{{entity.gravity}}</td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+<div class="container p-5">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table text-center">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Climate</th>
+            <th scope="col">Diameter</th>
+            <th scope="col">Gravity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="entities$ | async as entities">
+            <tr *ngFor="let entity of entities">
+              <th>{{entity.name}}</th>
+              <td>{{entity.climate}}</td>
+              <td>{{entity.diameter}}</td>
+              <td>{{entity.gravity}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,14 @@
 import { createReducer, on } from "@ngrx/store"
 import * as EntityActions from "./entities.actions";
 
-export const initialState: any = {
+export interface ENTITIES_INITIAL_STATE {
+    loading: boolean;
+    entities: ReadonlyArray<any>;
+    error: string | null
+}
+
+
+export const initialState: ENTITIES_INITIAL_STATE = {
     loading: true,
     entities: [],
     error: null
